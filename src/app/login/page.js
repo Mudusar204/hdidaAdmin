@@ -77,9 +77,9 @@ export default function Login() {
           await localStorage.setItem("token", res?.payload?.data?.user?.token);
           // Redirect to homepage
           if (res?.payload?.data?.user?.role === "user") {
-            // router.push("/");
+            router.push("/");
           } else {
-            // router.push("/adminDashboard");
+            router.push("/dashboard");
           }
         } else {
           throw new Error("Login failed");

@@ -81,6 +81,13 @@ const userSlice = createSlice({
       state.user = {};
     },
   },
+  
+  extraReducers: (builder) => {
+    builder.addCase(getUserDetails.fulfilled, (state, action) => {
+      state.user = action.payload; // Update user state with the response data
+    });
+  },
+
 });
 
 export const { setUser, deleteUser, setUserLogin } = userSlice.actions;
