@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Link from "next/link";
 import { getUserDetails } from "@/store/userSlice";
+import Image from "next/image";
 export function Navbar() {
   const router = useRouter();
 
@@ -21,7 +22,6 @@ export function Navbar() {
   useEffect(() => {
     dispatch(getUserDetails());
   }, []);
-  console.log(user, "user----------------");
   const logout=async()=>{
 	await localStorage.removeItem("role");
 	await localStorage.removeItem("userId");
@@ -32,8 +32,7 @@ export function Navbar() {
     // <main>
     <div className="flex flex-1 w-[100%]  items-center justify-between px-10">
       <h1 className="flex">
-        logo{" "}
-        {/* <img src='/images/logo-full.png' alt='' className='max-w-[120px] flex-1' /> */}
+        <Image src={require("../../../public/logo.svg")} width={100} height={100} />
       </h1>
       <nav>
         <DropdownMenu>

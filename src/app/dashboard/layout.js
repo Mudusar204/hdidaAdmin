@@ -79,7 +79,7 @@ export default function Layout({ children }) {
               }}
             >
               <li
-                className="flex justify-end rounded-md bg-blue-500 p-3 text-white"
+                className="flex justify-end rounded-md bg-[#1C9E7D] p-3 text-white"
                 key={0}
               >
                 <CommonTooltip

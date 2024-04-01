@@ -4,10 +4,10 @@ import Head from "next/head";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { signup, setUserLogin } from "../../store/userSlice";
+import { signup, setUserLogin } from "@/store/userSlice";
 import toast from "react-hot-toast";
 import Image from "next/image";
-export default function SignUp() {
+export default function AddNewUser() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [username, setUsername] = useState("");
@@ -87,26 +87,23 @@ export default function SignUp() {
 
     if (validateForm()) {
       try {
-        toast.loading("User signup");
+        toast.loading("Adding user...");
         // @ts-ignore
         const res = await dispatch(
           signup({ name:username, email, password, phone })
         );
         if (res?.payload?.status === true) {
           toast.dismiss();
-          toast.success("User signup successful");
-          dispatch(setUserLogin(true));
-          await localStorage.setItem("role", res?.payload?.data?.role);
-          await localStorage.setItem("token", res?.payload?.data?.token);
-          // await localStorage.setItem("userId", res?.payload?.data?.user?.id);
-          router.push("/");
+          toast.success("User added successful");
+          router.push("/dashboard/users");
         } else {
-          throw new Error("Signup failed");
+          console.log(res, "res");
+          throw new Error(res?.error?.message);
         }
       } catch (error) {
         toast.dismiss();
-        toast.error("Signup failed");
-        console.error("Error occurred while signing up:", error);
+        toast.error(error?.message);
+        console.error("Error occurred while adding user:", error);
       }
     }
   };
@@ -116,12 +113,12 @@ export default function SignUp() {
       <Head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
       </Head>
-      <div className="flex min-h-screen flex-1">
-        <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
+      <div className="flex  justify-center flex-1">
+        <div className="flex flex-1 flex-col justify-center px-4 border border-gray-200 pb-3 rounded-lg sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div>
               <h2 className="mt-8 text-2xl font-bold leading-9 tracking-tight text-gray-900">
-                Create an account
+                Add New User
               </h2>
             </div>
 
@@ -233,33 +230,16 @@ export default function SignUp() {
                       type="submit"
                       className="flex w-full justify-center rounded-md bg-[#1c9e7d] px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-green-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                     >
-                      Sign up
+                      Add User
                     </button>
                   </div>
                 </form>
-                <div className="text-center mt-2">
-                  already have account?{" "}
-                  <a className="text-blue-500" href="/login">
-                    Login
-                  </a>
-                </div>
+               
               </div>
             </div>
           </div>
         </div>
-        <div className="relative hidden w-0 flex-1 lg:block">
-          <img
-            className="absolute inset-0 h-full w-full object-cover"
-            src="https://images.unsplash.com/photo-1496917756835-20cb06e75b4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1908&q=80"
-            alt=""
-          />
-          {/* <Image
-           
-           className="absolute inset-0 h-full w-full object-cover"
-           src={require("../../assets/images/cleaning2.jpeg")}
-           alt="img"
-         /> */}
-        </div>
+       
       </div>
     </>
   );
