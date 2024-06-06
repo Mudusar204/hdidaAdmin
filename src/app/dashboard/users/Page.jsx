@@ -27,8 +27,8 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-const page = () => {
-  const router=useRouter()
+const Page = () => {
+  const router = useRouter();
   const [users, setUser] = useState([]);
   const [visibleActionBox, setVisibleActionBox] = useState(null);
   const getAllUsers = async () => {
@@ -74,12 +74,19 @@ const page = () => {
           },
         }
       );
-      toast.dismiss()
+      toast.dismiss();
       toast.success("User deleted successfully");
-      
+
       let newUsers = users.filter((user) => user._id !== userId);
       setUser(newUsers);
-      console.log(newUsers.length, "newUsers",users.length,"users",users[0],"users[0]");
+      console.log(
+        newUsers.length,
+        "newUsers",
+        users.length,
+        "users",
+        users[0],
+        "users[0]"
+      );
 
       // Optionally, add some user feedback here (like a toast notification)
       console.log("User deleted successfully");
@@ -155,7 +162,10 @@ const page = () => {
                   <Copy />
                   <p> Copy</p>
                 </button>
-                <button onClick={()=>router.push("/dashboard/users/addNewUser")} className="flex items-center">
+                <button
+                  onClick={() => router.push("/dashboard/users/addNewUser")}
+                  className="flex items-center"
+                >
                   <User />
                   <p className="whitespace-nowrap"> Add User</p>
                 </button>
@@ -245,4 +255,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
