@@ -50,7 +50,7 @@ const page = () => {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-center mb-4">User's Posts</h1>
+      <h1 className="text-2xl font-bold text-center mb-4">Users Posts</h1>
       <div className="flex flex-wrap justify-center">
         {posts.map((post, index) => (
           <PostCard key={index} post={post} />
