@@ -58,7 +58,7 @@ export default function Layout({ children }) {
 
   if (true) {
     return (
-      <main className="min-h-screen">
+      <main className="max-h-screen overflow-y-hidden">
         <header className="flex h-[70px] w-full items-center border-b border-gray-300">
           <Navbar />
         </header>
@@ -126,7 +126,7 @@ export default function Layout({ children }) {
               ))}
             </ul>
           </nav>
-          <main className="flex flex-1 border-l border-gray-300 p-4">
+          <main className="flex flex-1 border-l border-gray-300 p-4 max-h-[calc(100vh-100px)] overflow-y-scroll">
             {children}
           </main>
         </main>

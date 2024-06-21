@@ -1,13 +1,31 @@
 import React from "react";
+import { useRouter } from "next/navigation";
+import { Delete, DeleteIcon, Trash2 } from "lucide-react";
 
-const PostCard = ({ post }) => {
+const PostCard = ({ post, deletePost }) => {
+  const router = useRouter();
   return (
-    <div className=" rounded w-[300px] h-[430px] shadow-lg border m-2">
-      <div className="h-[300px] w-[300px] bg-gray-200">
-        <img className="w-full h-auto" src={post.images[0]} alt={post.title} />
+    <div
+      onClick={() => {
+        router.push(`/dashboard/posts/postDetail?post_id=${post._id}`);
+      }}
+      className="cursor-pointer rounded w-[300px] h-[330px] shadow-lg border m-2"
+    >
+      <div className="h-[200px] w-[300px] bg-gray-200">
+        <img
+          className="w-[300px] h-[200px]"
+          src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${post?.images[0]}`}
+          alt={post?.title}
+        />
       </div>
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2">{post.title}</div>
+        <div className="font-bold text-xl mb-2 flex justify-between">
+          <p className="whitespace-nowrap overflow-hidden"> {post.title} </p>
+          <Trash2
+            onClick={() => deletePost(post._id)}
+            className="text-red-500 ml-3"
+          />
+        </div>
         <p className="text-gray-700 text-base whitespace-nowrap overflow-hidden">
           {post.description}
         </p>

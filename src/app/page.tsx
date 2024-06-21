@@ -7,13 +7,13 @@ import ReactLoading from "react-loading";
 import { useDispatch } from "react-redux";
 import { setUserLogin, getUserDetails, login } from "../store/userSlice";
 export default function Home() {
-  const dispatch:any = useDispatch();
+  const dispatch: any = useDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const handleSubmit = async () => {
     try {
       setIsLoading(true); // Dispatch login action
-      const res:any = await dispatch(getUserDetails());
+      const res: any = await dispatch(getUserDetails());
       // Check login response
       if (res?.payload?.status === true) {
         return true;

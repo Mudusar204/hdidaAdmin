@@ -51,7 +51,7 @@ export default function Dashboard() {
   const [mainChartState, setMainChartState] = useState("monthly");
 
   return (
-    <div className="p-4 w-full">
+    <div className="p-4 w-full h-full overflow-y-scroll">
       <h1 className="text-2xl font-bold text-center">Dashboard</h1>
       <div className="flex flex-col gap-2">
         <div className="flex justify-start gap-3">

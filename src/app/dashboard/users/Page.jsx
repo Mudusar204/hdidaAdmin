@@ -221,7 +221,15 @@ const Page = () => {
 
           <TableBody>
             {table.getRowModel().rows.map((row) => (
-              <TableRow key={row.id}>
+              <TableRow
+                className="cursor-pointer"
+                onClick={() =>
+                  router.push(
+                    `/dashboard/users/userProfile?user_id=${row.original._id}`
+                  )
+                }
+                key={row.id}
+              >
                 {row.getVisibleCells().map((cell) => {
                   if (cell.column.id === "isVerified") {
                     return (
