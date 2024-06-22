@@ -41,7 +41,7 @@ const PostDetailScreen = () => {
 
   useEffect(() => {
     getPostDetail();
-  }, []);
+  }, [postId]);
   return (
     <div className="w-full">
       {postDetail && <PostDetailComponent post={postDetail} />}

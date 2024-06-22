@@ -41,7 +41,7 @@ const UserProfileScreen = () => {
 
   useEffect(() => {
     getUserProfile();
-  }, []);
+  }, [userId]);
   return (
     <div className="w-full">
       {userProfile && <UserProfileComponent user={userProfile} />}
