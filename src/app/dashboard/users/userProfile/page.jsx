@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
 import UserProfileComponent from "../../../../components/UserProfile";
-const Page = () => {
+const UserProfile = () => {
   const searchParams = useSearchParams();
   const userId = searchParams.get("user_id");
   const [userProfile, setUserProfile] = useState(null);
@@ -49,4 +49,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default UserProfile;

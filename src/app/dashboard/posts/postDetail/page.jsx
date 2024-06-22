@@ -4,7 +4,7 @@ import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
 import PostDetailComponent from "../../../../components/PostDetail";
-const Page = () => {
+const PostDetail = () => {
   const searchParams = useSearchParams();
   const postId = searchParams.get("post_id");
   const [postDetail, setPostDetail] = useState(null);
@@ -49,4 +49,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default PostDetail;
