@@ -37,7 +37,7 @@ const Page = () => {
       toast.loading("Loading...");
       const token = await localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/admin/getAllUsers",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/getAllUsers`,
         {
           headers: {
             Authorization: token,
@@ -64,7 +64,7 @@ const Page = () => {
       console.log(userId, "userId");
       const token = await localStorage.getItem("token");
       const response = await axios.delete(
-        "http://localhost:5000/api/admin/deleteUser",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/deleteUser`,
         {
           params: {
             id: userId,

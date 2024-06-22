@@ -65,8 +65,9 @@ export default function Login() {
         toast.loading("User login");
         // Dispatch login action
         const res = await dispatch(login({ email, phone, password }));
+        console.log(res, "response in page");
         // Check login response
-        if (res.payload.status === true) {
+        if (res?.payload?.status === true) {
           // Set user login state
           toast.dismiss();
           toast.success("login sucess");
@@ -82,12 +83,13 @@ export default function Login() {
             router.push("/dashboard");
           }
         } else {
-          throw new Error("Login failed");
+          toast.dismiss();
+          toast.error(res?.payload?.message);
         }
       } catch (error) {
         console.error("Error occurred while logging in:", error);
         toast.dismiss();
-        toast.error("invalid credentials");
+        toast.error(error?.message);
       }
     }
   };

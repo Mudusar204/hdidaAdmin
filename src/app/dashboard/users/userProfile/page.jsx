@@ -16,7 +16,7 @@ const UserProfileScreen = () => {
       toast.loading("Loading...");
       const token = await localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/user/getUser",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/getUser`,
         {
           headers: {
             Authorization: token,

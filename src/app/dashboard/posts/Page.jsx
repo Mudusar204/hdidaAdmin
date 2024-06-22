@@ -25,7 +25,7 @@ const Page = () => {
       toast.loading("Loading...");
       const token = await localStorage.getItem("token");
       const response = await axios.get(
-        "http://localhost:5000/api/post/getAll",
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/post/getAll`,
         {
           headers: {
             Authorization: token,
@@ -43,30 +43,6 @@ const Page = () => {
     }
   };
 
-  const deletePost = async (postId) => {
-    try {
-      toast.loading("Deleting post...");
-      console.log(postId, "postId");
-      const token = await localStorage.getItem("token");
-      const response = await axios.delete(
-        "http://localhost:5000/api/post/delete",
-        {
-          data: {
-            postId: postId,
-          },
-          headers: {
-            Authorization: token,
-          },
-        }
-      );
-      toast.dismiss();
-      toast.success("Post deleted successfully");
-    } catch (error) {
-      toast.dismiss();
-      toast.error(error?.message);
-      console.log(error);
-    }
-  };
   useEffect(() => {
     getAllPosts();
   }, []);
@@ -76,7 +52,7 @@ const Page = () => {
       <h1 className="text-2xl font-bold text-center mb-4">Users Posts</h1>
       <div className="flex flex-wrap justify-center">
         {posts.map((post, index) => (
-          <PostCard key={index} post={post} deletePost={deletePost} />
+          <PostCard key={index} post={post} />
         ))}
       </div>
     </div>

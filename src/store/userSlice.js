@@ -11,19 +11,15 @@ export const getUserDetails = createAsyncThunk(
       let userId = await localStorage.getItem("userId");
       let token = await localStorage.getItem("token");
 
-      console.log("function chala", userId,"token",token);
-      const response = await axios.get(
-        `${BASE_URL}/api/user/getUser`,
-        {
-        
-          headers: {
-            Authorization:token, // Correct way to set authorization header
-          },
-          // params: {
-          //   id: userId,
-          // }
-          }
-      );
+      console.log("function chala", userId, "token", token);
+      const response = await axios.get(`${BASE_URL}/api/user/getUser`, {
+        headers: {
+          Authorization: token, // Correct way to set authorization header
+        },
+        // params: {
+        //   id: userId,
+        // }
+      });
       return response.data;
     } catch (error) {
       // @ts-ignore
@@ -32,12 +28,11 @@ export const getUserDetails = createAsyncThunk(
   }
 );
 
-
 export const signup = createAsyncThunk("userSlice/signup", async (userData) => {
   try {
     console.log("function chala signup wala");
     const response = await axios.post(`${BASE_URL}/api/user/signup`, userData);
-    localStorage.setItem("userId", response.data.data._id);
+    localStorage.setItem("userId", response?.data?.data?._id);
 
     return response.data;
   } catch (error) {
@@ -50,18 +45,23 @@ export const signup = createAsyncThunk("userSlice/signup", async (userData) => {
 
 export const login = createAsyncThunk("userSlice/login", async (userData) => {
   try {
-    console.log("function chala login wala ");
     const response = await axios.post(`${BASE_URL}/api/user/login`, userData);
-    console.log(response.data, "response ");
-    localStorage.setItem("userId", response.data.data._id);
+    console.log(response?.data, "response ", response?.data?.data?._id);
 
-    return response.data;
+    if (response?.data?.data?.user?.role == "user") {
+      return { status: "false", message: "You are not Admin" };
+    }
+    {
+      response?.data?.data?._id &&
+        localStorage.setItem("userId", response?.data?.data?.user?.id);
+    }
+
+    return response?.data;
   } catch (error) {
     // @ts-ignore
-    throw new Error(error.response.data.error || "Something went wrong");
+    throw new Error(error?.response?.data?.error || "Something went wrong");
   }
 });
-
 
 const userSlice = createSlice({
   name: "userSlice",
@@ -81,13 +81,12 @@ const userSlice = createSlice({
       state.user = {};
     },
   },
-  
+
   extraReducers: (builder) => {
     builder.addCase(getUserDetails.fulfilled, (state, action) => {
       state.user = action.payload; // Update user state with the response data
     });
   },
-
 });
 
 export const { setUser, deleteUser, setUserLogin } = userSlice.actions;
