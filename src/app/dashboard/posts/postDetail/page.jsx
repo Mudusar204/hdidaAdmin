@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { Suspense } from "react";
 import PostDetailComponent from "../../../../components/PostDetail";
 const PostDetailScreen = () => {
   const searchParams = useSearchParams();
@@ -44,7 +45,9 @@ const PostDetailScreen = () => {
   }, [postId]);
   return (
     <div className="w-full">
-      {postDetail && <PostDetailComponent post={postDetail} />}
+      <Suspense>
+        {postDetail && <PostDetailComponent post={postDetail} />}
+      </Suspense>
     </div>
   );
 };

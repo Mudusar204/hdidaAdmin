@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { Suspense } from "react";
 import UserProfileComponent from "../../../../components/UserProfile";
 const UserProfileScreen = () => {
   const searchParams = useSearchParams();
@@ -44,7 +45,9 @@ const UserProfileScreen = () => {
   }, [userId]);
   return (
     <div className="w-full">
-      {userProfile && <UserProfileComponent user={userProfile} />}
+      <Suspense>
+        {userProfile && <UserProfileComponent user={userProfile} />}
+      </Suspense>
     </div>
   );
 };
