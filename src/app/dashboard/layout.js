@@ -2,7 +2,7 @@
 
 import { useState, useEffect, cloneElement } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
   ChevronRight,
   LayoutDashboard,
@@ -27,11 +27,11 @@ import {
 import { cn } from "@/lib/utils";
 import { CommonAccordion, CommonTooltip } from "@/components";
 import { Navbar } from "./Navbar";
+import { Router, useRouter } from "next/router";
 
 export default function Layout({ children }) {
-  const router = useRouter();
   const [sidebarToggle, setSidebarToggle] = useState(false);
-
+  const router = useRouter();
   const path = usePathname();
   const defaultRoutes = [
     {
@@ -97,14 +97,15 @@ export default function Layout({ children }) {
               </li>
               {defaultRoutes.map((route, i) => (
                 <li key={i + 1}>
-                  <Link
+                  <button
                     className={cn(
                       {
                         "bg-gray-100": path === route.path,
                       },
                       "flex cursor-pointer items-center justify-start gap-2 rounded-md p-3 transition-colors  hover:bg-gray-100"
                     )}
-                    href={route.path}
+                    onClick={() => router.push(route.path)}
+                    // href={route.path}
                   >
                     <CommonTooltip
                       trigger={cloneElement(route.icon, {
@@ -121,7 +122,7 @@ export default function Layout({ children }) {
                     >
                       {route.name}
                     </span>
-                  </Link>
+                  </button>
                 </li>
               ))}
             </ul>
