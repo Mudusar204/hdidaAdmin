@@ -27,7 +27,7 @@ import {
 import axios from "axios";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-const Page = () => {
+const Users = () => {
   const router = useRouter();
   const [users, setUser] = useState([]);
   const [visibleActionBox, setVisibleActionBox] = useState(null);
@@ -263,4 +263,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Users;

@@ -16,7 +16,7 @@ const mockPosts = [
   // Add more posts as needed for demonstration
 ];
 
-const Page = () => {
+const Posts = () => {
   const [posts, setPosts] = useState([]);
 
   const getAllPosts = async () => {
@@ -59,4 +59,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Posts;
