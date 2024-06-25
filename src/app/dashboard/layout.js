@@ -27,7 +27,7 @@ import {
 import { cn } from "@/lib/utils";
 import { CommonAccordion, CommonTooltip } from "@/components";
 import { Navbar } from "./Navbar";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 export default function Layout({ children }) {
   const [sidebarToggle, setSidebarToggle] = useState(false);
@@ -102,7 +102,7 @@ export default function Layout({ children }) {
                       {
                         "bg-gray-100": path === route.path,
                       },
-                      "flex cursor-pointer items-center justify-start gap-2 rounded-md p-3 transition-colors  hover:bg-gray-100"
+                      "flex w-full cursor-pointer items-center justify-start gap-2 rounded-md p-3 transition-colors  hover:bg-gray-100"
                     )}
                     onClick={() => router.push(route.path)}
                     // href={route.path}
