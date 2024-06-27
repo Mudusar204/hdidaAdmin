@@ -1,7 +1,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { Trash2 } from "lucide-react";
-
+import ImageSlider from "./ImageSlider";
 const PostCard = ({ post }) => {
   const router = useRouter();
 
@@ -12,17 +12,19 @@ const PostCard = ({ post }) => {
   return (
     <div
       onClick={handleCardClick}
-      className="cursor-pointer rounded w-[300px] h-[330px] shadow-lg border m-2"
+      className="cursor-pointer rounded w-[300px] h-[350px] shadow-lg border m-2"
     >
       <div className="h-[200px] w-[300px] bg-gray-200">
-        <img
+        <ImageSlider images={post?.images} height={"200px"} width={"300px"} />
+
+        {/* <img
           className="w-[300px] h-[200px]"
           src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${post?.images[0]}`}
           alt={post?.title}
-        />
+        /> */}
       </div>
       <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2 flex justify-between">
+        <div className="font-bold text-xl my-2 flex justify-between">
           <p className="whitespace-nowrap overflow-hidden">{post.title}</p>
         </div>
         <p className="text-gray-700 text-base whitespace-nowrap overflow-hidden">

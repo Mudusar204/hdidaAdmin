@@ -15,6 +15,7 @@ import {
   Edit,
   Copy,
   User,
+  Edit2,
 } from "lucide-react";
 import {
   Table,
@@ -31,6 +32,10 @@ const Users = () => {
   const router = useRouter();
   const [users, setUser] = useState([]);
   const [visibleActionBox, setVisibleActionBox] = useState(null);
+  const [actionBoxOpen, setActionBoxOpen] = useState(false);
+  useEffect(() => {
+    console.log(actionBoxOpen, "actionBoxOpen");
+  }, [actionBoxOpen]);
   const getAllUsers = async () => {
     try {
       toast.dismiss();
@@ -143,6 +148,7 @@ const Users = () => {
             <CircleEllipsisIcon
               className="cursor-pointer"
               onClick={(e) => {
+                setActionBoxOpen(!actionBoxOpen);
                 e.stopPropagation(); // Prevents the event from bubbling up to the document
                 setVisibleActionBox(
                   visibleActionBox === info.row.id ? null : info.row.id
@@ -168,6 +174,17 @@ const Users = () => {
                 >
                   <User />
                   <p className="whitespace-nowrap"> Add User</p>
+                </button>
+                <button
+                  onClick={() =>
+                    router.push(
+                      `/dashboard/users/updateUser?user_id=${info.row.original._id}`
+                    )
+                  }
+                  className="flex items-center"
+                >
+                  <Edit2 className="h-5 w-5" />
+                  <p className="whitespace-nowrap"> Update User</p>
                 </button>
 
                 <button
@@ -223,11 +240,13 @@ const Users = () => {
             {table.getRowModel().rows.map((row) => (
               <TableRow
                 className="cursor-pointer"
-                onClick={() =>
-                  router.push(
-                    `/dashboard/users/userProfile?user_id=${row.original._id}`
-                  )
-                }
+                onClick={() => {
+                  !actionBoxOpen
+                    ? router.push(
+                        `/dashboard/users/userProfile?user_id=${row.original._id}`
+                      )
+                    : "";
+                }}
                 key={row.id}
               >
                 {row.getVisibleCells().map((cell) => {

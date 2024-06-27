@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
-import { Trash2 } from "lucide-react";
-
+import { Edit, Trash2 } from "lucide-react";
+import ImageSlider from "../components/ImageSlider";
 const PostDetailComponent = ({ post, deletePost }) => {
   const handleDeleteClick = (event) => {
     event.stopPropagation();
@@ -11,20 +11,26 @@ const PostDetailComponent = ({ post, deletePost }) => {
   return (
     <div className="w-[100%]  mb-8 p-4 ">
       {/* <div className="flex flex-col md:flex-row mb-6"> */}
-      <div className="w-full h-[70vh] bg-gray-200">
+      {/* <div className="w-full h-[70vh] bg-gray-200">
         <img
           className="w-full h-full rounded-md object-contain"
           src={`${process.env.NEXT_PUBLIC_IMAGE_URL}/${post?.images[0]}`}
           alt={post?.title}
         />
-      </div>
-
+      </div> */}
+      <ImageSlider images={post?.images} height={"70vh"} width={"full"} />
       <div className="w-full  flex justify-between items-center gap-10 ">
         <h1 className="text-3xl font-bold my-4">{post.title}</h1>
-        <Trash2
-          onClick={handleDeleteClick}
-          className="text-red-500 ml-3 cursor-pointer mr-6"
-        />
+        <div className="flex  ">
+          <Edit
+            onClick={handleDeleteClick}
+            className=" ml-3 cursor-pointer mr-6"
+          />
+          <Trash2
+            onClick={handleDeleteClick}
+            className="text-red-500 ml-3 cursor-pointer mr-6"
+          />
+        </div>
       </div>
       <div className="w-full  flex justify-between gap-10 ">
         <p className="text-gray-700 mb-2">

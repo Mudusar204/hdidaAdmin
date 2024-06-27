@@ -6,19 +6,19 @@ import axios from "axios";
 const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 export const getUserDetails = createAsyncThunk(
   "userSlice/getUserDetails",
-  async () => {
+  async (userId) => {
     try {
-      let userId = await localStorage.getItem("userId");
-      let token = await localStorage.getItem("token");
+      // let userId = localStorage.getItem("userId");
+      let token = localStorage.getItem("token");
 
       console.log("function chala", userId, "token", token);
       const response = await axios.get(`${BASE_URL}/api/user/getUser`, {
         headers: {
           Authorization: token, // Correct way to set authorization header
         },
-        // params: {
-        //   id: userId,
-        // }
+        params: {
+          id: userId,
+        },
       });
       return response.data;
     } catch (error) {
@@ -62,6 +62,32 @@ export const login = createAsyncThunk("userSlice/login", async (userData) => {
     throw new Error(error?.response?.data?.error || "Something went wrong");
   }
 });
+
+export const updateUser = createAsyncThunk(
+  "userSlice/update",
+  async (userData) => {
+    try {
+      let token = localStorage.getItem("token");
+      console.log("function chala", userData, "token", token);
+      const response = await axios.post(
+        `${BASE_URL}/api/user/update`,
+        userData,
+        {
+          headers: {
+            Authorization: token,
+          },
+        }
+      );
+
+      console.log(response?.data, "response ", response?.data?.data?._id);
+
+      return response?.data;
+    } catch (error) {
+      // @ts-ignore
+      throw new Error(error?.response?.data?.error || "Something went wrong");
+    }
+  }
+);
 
 const userSlice = createSlice({
   name: "userSlice",
