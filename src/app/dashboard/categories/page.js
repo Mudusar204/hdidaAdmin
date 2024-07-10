@@ -4,32 +4,45 @@ import toast from "react-hot-toast";
 import axios from "axios";
 import { Delete, DeleteIcon, Trash2 } from "lucide-react";
 
-const RenderItem = ({ item, onPress, selected, subCategories , handleDeleteCategory}) => {
+const RenderItem = ({
+  item,
+  onPress,
+  selected,
+  subCategories,
+  handleDeleteCategory,
+}) => {
   return (
     <div
       onClick={() => onPress(item)}
       className="border-t-2 border-gray-300  p-2  my-5"
     >
-<div className="flex justify-between items-center">
-
-      <h3 className="text-lg font-medium text-center mb-1">
-        {item?.name || item}
-      </h3>
-      <Trash2  onClick={() => handleDeleteCategory(item?._id)} className="cursor-pointer text-red-600" />
-</div>
+      <div className="flex justify-between items-center">
+        <h3 className="text-lg font-medium text-center mb-1">
+          {item?.name || item}
+        </h3>
+        <Trash2
+          onClick={() => handleDeleteCategory(item?._id)}
+          className="cursor-pointer text-red-600"
+        />
+      </div>
       {/* <p className="text-sm text-center text-gray-500">{item?.description}</p> */}
       {subCategories?.length > 0 && (
         <ul className="flex flex-wrap justify-start items-center gap-3 text-sm text-center  mt-2">
           {subCategories.map((subItem, index) => (
-            <div className={` border rounded-lg shadow-md p-2 cursor-pointer transition-transform transform hover:scale-105 ${selected ? "border-primary" : "border-gray-300"
-              }`}>
-              {(item?.name == "Vehicle Type" || item?.name=="Body Style") && (
-                <img 
-                  src={`https://www.hdida.app/cat/${subItem?.name.split(" ")[0]}.png`}
+            <div
+              key={index}
+              className={` border rounded-lg shadow-md p-2 cursor-pointer transition-transform transform hover:scale-105 ${
+                selected ? "border-primary" : "border-gray-300"
+              }`}
+            >
+              {(item?.name == "Vehicle Type" || item?.name == "Body Style") && (
+                <img
+                  src={`https://www.hdida.app/cat/${
+                    subItem?.name.split(" ")[0]
+                  }.png`}
                   alt={subItem?.name}
                   className="h-[100px] w-[100px]"
                 />
-
               )}
               <li key={index}>{subItem?.name}</li>
             </div>
@@ -51,7 +64,9 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
     e.preventDefault();
     onSubmit({
       name: categoryName,
-      values: categoryValues.split(",").map((value) =>({name:value.trim()}) ),
+      values: categoryValues
+        .split(",")
+        .map((value) => ({ name: value.trim() })),
       type: categoryType,
     });
   };
@@ -185,10 +200,10 @@ const CatList = () => {
   const handleDeleteCategory = async (categoryId) => {
     try {
       console.log(categoryId);
-    if( ! window.confirm("Are you sure you want to delete this category?")){
-      return;
-    }
-    
+      if (!window.confirm("Are you sure you want to delete this category?")) {
+        return;
+      }
+
       toast.dismiss();
       toast.loading("deleting Category...");
       const token = localStorage.getItem("token");
@@ -203,14 +218,13 @@ const CatList = () => {
           },
         }
       );
-      
 
       if (response.data.status) {
         toast.success(response.data.message);
         getCat();
         // setModalIsOpen(false);
       } else {
-      toast.dismiss();
+        toast.dismiss();
 
         toast.error(response.data.message);
       }
