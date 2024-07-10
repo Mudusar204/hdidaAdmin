@@ -1,54 +1,51 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import axios from 'axios';
-import Select from 'react-select';
-import toast from 'react-hot-toast';
-import { features } from 'process';
+import axios from "axios";
+import Select from "react-select";
+import toast from "react-hot-toast";
+import { features } from "process";
 
-
- const savedFeatures = [
-  {name: 'Air Conditioning'},
-  {name: 'Power Windows'},
-  {name: 'Power Door Locks'},
-  {name: 'Power Mirrors'},
-  {name: 'Cruise Control'},
-  {name: 'Bluetooth Connectivity'},
-  {name: 'USB Ports'},
-  {name: 'Backup Camera'},
-  {name: 'Keyless Entry'},
-  {name: 'Remote Start'},
-  {name: 'Sunroof/Moonroof'},
-  {name: 'Alloy Wheels'},
-  {name: 'Fog Lights'},
-  {name: 'Traction Control'},
-  {name: 'Stability Control'},
-  {name: 'Anti-lock Braking System (ABS)'},
-  {name: 'Tire Pressure Monitoring System (TPMS)'},
-  {name: 'Heated Seats'},
-  {name: 'Leather Seats'},
-  {name: 'Satellite Radio'},
-  {name: 'Navigation System'},
-  {name: 'Automatic Transmission'},
-  {name: 'Manual Transmission'},
-  {name: 'Four-wheel drive (4WD)'},
-  {name: 'All-wheel drive (AWD)'},
-  {name: 'Heated Steering Wheel'},
-  {name: 'Adaptive Cruise Control'},
-  {name: 'Lane Departure Warning'},
-  {name: 'Blind Spot Monitoring'},
-  {name: 'Parking Sensors'},
-  {name: 'Hands-Free Liftgate'},
-  {name: 'Voice Control'},
-  {name: 'Head-Up Display'},
-  {name: 'LED Headlights'},
-  {name: 'Roof Rails'},
-  {name: 'Trailer Hitch'},
-  {name: 'Sport Suspension'},
-  {name: 'Off-Road Package'},
-];   
-
-
+const savedFeatures = [
+  { name: "Air Conditioning" },
+  { name: "Power Windows" },
+  { name: "Power Door Locks" },
+  { name: "Power Mirrors" },
+  { name: "Cruise Control" },
+  { name: "Bluetooth Connectivity" },
+  { name: "USB Ports" },
+  { name: "Backup Camera" },
+  { name: "Keyless Entry" },
+  { name: "Remote Start" },
+  { name: "Sunroof/Moonroof" },
+  { name: "Alloy Wheels" },
+  { name: "Fog Lights" },
+  { name: "Traction Control" },
+  { name: "Stability Control" },
+  { name: "Anti-lock Braking System (ABS)" },
+  { name: "Tire Pressure Monitoring System (TPMS)" },
+  { name: "Heated Seats" },
+  { name: "Leather Seats" },
+  { name: "Satellite Radio" },
+  { name: "Navigation System" },
+  { name: "Automatic Transmission" },
+  { name: "Manual Transmission" },
+  { name: "Four-wheel drive (4WD)" },
+  { name: "All-wheel drive (AWD)" },
+  { name: "Heated Steering Wheel" },
+  { name: "Adaptive Cruise Control" },
+  { name: "Lane Departure Warning" },
+  { name: "Blind Spot Monitoring" },
+  { name: "Parking Sensors" },
+  { name: "Hands-Free Liftgate" },
+  { name: "Voice Control" },
+  { name: "Head-Up Display" },
+  { name: "LED Headlights" },
+  { name: "Roof Rails" },
+  { name: "Trailer Hitch" },
+  { name: "Sport Suspension" },
+  { name: "Off-Road Package" },
+];
 
 const UpdatePost = () => {
   const router = useRouter();
@@ -56,14 +53,14 @@ const UpdatePost = () => {
   const postId = searchParams.get("post_id");
 
   const [post, setPost] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     price: 0,
     fixedPrice: false,
     features: [],
     images: [],
-    location: { addressDetail: '', coordinates: [], city: '', country: '' },
-    info: []
+    location: { addressDetail: "", coordinates: [], city: "", country: "" },
+    info: [],
   });
 
   const [loading, setLoading] = useState(false);
@@ -83,14 +80,24 @@ const UpdatePost = () => {
       const initialSubCategories = {};
       const initialSelectedSubCategories = {};
 
-      post.info.forEach(category => {
-        const categoryData = categories.find(cat => cat.name === category.label);
+      post.info.forEach((category) => {
+        const categoryData = categories.find(
+          (cat) => cat.name === category.label
+        );
         if (categoryData) {
-          initialSelectedCategories[category.label] = { value: category.value, label: category.value, subCategories: categoryData.subCategories };
-          initialSubCategories[category.label] = categoryData.subCategories || [];
+          initialSelectedCategories[category.label] = {
+            value: category.value,
+            label: category.value,
+            subCategories: categoryData.subCategories,
+          };
+          initialSubCategories[category.label] =
+            categoryData.subCategories || [];
 
           if (category.subValue) {
-            initialSelectedSubCategories[category.label] = { value: category.subValue, label: category.subValue };
+            initialSelectedSubCategories[category.label] = {
+              value: category.subValue,
+              label: category.subValue,
+            };
           }
         }
       });
@@ -117,7 +124,7 @@ const UpdatePost = () => {
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/post/getById`,
         {
           headers: { Authorization: token },
-          params: { id: postId }
+          params: { id: postId },
         }
       );
 
@@ -132,9 +139,7 @@ const UpdatePost = () => {
     } catch (error) {
       toast.dismiss();
       if (error.response) {
-        toast.error(
-          error.response.data?.message || "Failed to fetch the post"
-        );
+        toast.error(error.response.data?.message || "Failed to fetch the post");
       } else if (error.request) {
         toast.error("No response from server, please try again");
       } else {
@@ -160,10 +165,10 @@ const UpdatePost = () => {
       if (response.data.status) {
         setCategories(response.data.data);
       } else {
-        window.alert('Error', response.data.message);
+        window.alert("Error", response.data.message);
       }
     } catch (err) {
-      console.log('GetCat() : Error :', err);
+      console.log("GetCat() : Error :", err);
       setLoading(false);
     }
   };
@@ -171,22 +176,22 @@ const UpdatePost = () => {
   const handleCategoryChange = (category, selectedOption) => {
     setSelectedCategories({
       ...selectedCategories,
-      [category]: selectedOption
+      [category]: selectedOption,
     });
     setSubCategories({
       ...subCategories,
-      [category]: selectedOption.subCategories || []
+      [category]: selectedOption.subCategories || [],
     });
     setSelectedSubCategories({
       ...selectedSubCategories,
-      [category]: null
+      [category]: null,
     });
   };
 
   const handleSubCategoryChange = (category, selectedOption) => {
     setSelectedSubCategories({
       ...selectedSubCategories,
-      [category]: selectedOption
+      [category]: selectedOption,
     });
   };
 
@@ -206,7 +211,7 @@ const UpdatePost = () => {
   };
 
   const handleFeaturesChange = (selectedOptions) => {
-    const features = selectedOptions.map(option => option.value);
+    const features = selectedOptions.map((option) => option.value);
     setPost((prevPost) => ({
       ...prevPost,
       features,
@@ -215,8 +220,13 @@ const UpdatePost = () => {
 
   const handleImageChange = (e) => {
     const files = Array.from(e.target.files);
- 
-    console.log(files.length,"file", files,"--------------------------------");
+
+    console.log(
+      files.length,
+      "file",
+      files,
+      "--------------------------------"
+    );
     setPost((prevPost) => ({
       ...prevPost,
       images: files,
@@ -227,9 +237,13 @@ const UpdatePost = () => {
     e.preventDefault();
     // setLoading(true);
     toast.loading("Updating post...");
-    const infoArray = Object.keys(selectedCategories).map(category => {
-      const subValue = selectedSubCategories[category]?.value || '';
-      return { label: category, value: selectedCategories[category].value, subValue: subValue };
+    const infoArray = Object.keys(selectedCategories).map((category) => {
+      const subValue = selectedSubCategories[category]?.value || "";
+      return {
+        label: category,
+        value: selectedCategories[category].value,
+        subValue: subValue,
+      };
     });
 
     const data = {
@@ -250,13 +264,13 @@ const UpdatePost = () => {
     };
 
     const token = localStorage.getItem("token");
-console.log(data.images,"--------------------------------");
+    console.log(data.images, "--------------------------------");
     try {
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/post/update`,
         data,
         {
-          headers: { Authorization: token }
+          headers: { Authorization: token },
         }
       );
       if (response.data.status) {
@@ -266,6 +280,7 @@ console.log(data.images,"--------------------------------");
         toast.error(response.data.message);
       }
     } catch (error) {
+      toast.dismiss();
       toast.error("Failed to update post");
       console.log(error);
     } finally {
@@ -273,66 +288,65 @@ console.log(data.images,"--------------------------------");
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   toast.loading("Updating post...");
 
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   toast.loading("Updating post...");
+  //   const infoArray = Object.keys(selectedCategories).map(category => {
+  //     const subValue = selectedSubCategories[category]?.value || '';
+  //     return { label: category, value: selectedCategories[category].value, subValue: subValue };
+  //   });
 
-//   const infoArray = Object.keys(selectedCategories).map(category => {
-//     const subValue = selectedSubCategories[category]?.value || '';
-//     return { label: category, value: selectedCategories[category].value, subValue: subValue };
-//   });
+  //   const formData = new FormData();
+  //   formData.append('id', postId);
+  //   formData.append('title', post.title);
+  //   formData.append('description', post.description);
+  //   formData.append('price', post.price);
+  //   formData.append('fixedPrice', post.fixedPrice);
+  //   formData.append('location[coordinates]', JSON.stringify(post.location.coordinates));
+  //   formData.append('location[city]', post.location.city);
+  //   formData.append('location[country]', post.location.country);
+  //   formData.append('location[addressDetail]', post.location.addressDetail);
+  //   formData.append('features', JSON.stringify(post.features));
+  //   formData.append('info', JSON.stringify(infoArray));
 
-//   const formData = new FormData();
-//   formData.append('id', postId);
-//   formData.append('title', post.title);
-//   formData.append('description', post.description);
-//   formData.append('price', post.price);
-//   formData.append('fixedPrice', post.fixedPrice);
-//   formData.append('location[coordinates]', JSON.stringify(post.location.coordinates));
-//   formData.append('location[city]', post.location.city);
-//   formData.append('location[country]', post.location.country);
-//   formData.append('location[addressDetail]', post.location.addressDetail);
-//   formData.append('features', JSON.stringify(post.features));
-//   formData.append('info', JSON.stringify(infoArray));
+  //   Array.from(post.images).forEach((image, index) => {
+  //     formData.append(`images`, image);
+  //   });
 
-//   Array.from(post.images).forEach((image, index) => {
-//     formData.append(`images`, image);
-//   });
+  //   const token = localStorage.getItem("token");
 
-//   const token = localStorage.getItem("token");
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.NEXT_PUBLIC_BASE_URL}/api/post/update`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           'Authorization': token,
+  //           'Content-Type': 'multipart/form-data',
+  //         },
+  //       }
+  //     );
 
-//   try {
-//     const response = await axios.post(
-//       `${process.env.NEXT_PUBLIC_BASE_URL}/api/post/update`,
-//       formData,
-//       {
-//         headers: {
-//           'Authorization': token,
-//           'Content-Type': 'multipart/form-data',
-//         },
-//       }
-//     );
-
-//     if (response.data.status) {
-//       toast.success("Post updated successfully");
-//       router.push(`/dashboard/posts/postDetail?post_id=${postId}`);
-//     } else {
-//       toast.error(response.data.message);
-//     }
-//   } catch (error) {
-//     toast.error("Failed to update post");
-//     console.log(error);
-//   } finally {
-//     setLoading(false);
-//   }
-// };
+  //     if (response.data.status) {
+  //       toast.success("Post updated successfully");
+  //       router.push(`/dashboard/posts/postDetail?post_id=${postId}`);
+  //     } else {
+  //       toast.error(response.data.message);
+  //     }
+  //   } catch (error) {
+  //     toast.error("Failed to update post");
+  //     console.log(error);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   return (
     <div className="container mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Update Post</h2>
       {loading ? (
-        <div className='w-4 h-4 animate-spin border-red-100 border-2 ' />
+        <div className="w-4 h-4 animate-spin border-red-100 border-2 " />
       ) : (
         <form onSubmit={handleSubmit}>
           <div className="mb-4">
@@ -385,7 +399,7 @@ console.log(data.images,"--------------------------------");
             />
           </div>
 
-          {categories.map(category => (
+          {categories.map((category) => (
             <div key={category.id} className="mb-4">
               <label className="block text-sm font-medium text-gray-700">
                 {category.name}
@@ -394,27 +408,47 @@ console.log(data.images,"--------------------------------");
                 <>
                   <Select
                     value={selectedCategories[category.name] || null}
-                    onChange={(option) => handleCategoryChange(category.name, option)}
-                    options={category.values.map(value => ({ value: value.name, label: value.name, subCategories: value.subCategories }))}
+                    onChange={(option) =>
+                      handleCategoryChange(category.name, option)
+                    }
+                    options={category.values.map((value) => ({
+                      value: value.name,
+                      label: value.name,
+                      subCategories: value.subCategories,
+                    }))}
                     className="mt-1 block w-full"
                     placeholder={`Select ${category.name}`}
                   />
-                  {selectedCategories[category.name] && subCategories[category.name] && subCategories[category.name].length > 0 && (
-                    <Select
-                      value={selectedSubCategories[category.name] || null}
-                      onChange={(option) => handleSubCategoryChange(category.name, option)}
-                      options={subCategories[category.name].map(subCategory => ({ value: subCategory, label: subCategory }))}
-                      className="mt-1 block w-full"
-                      placeholder={`Select Subcategory of ${category.name}`}
-                    />
-                  )}
+                  {selectedCategories[category.name] &&
+                    subCategories[category.name] &&
+                    subCategories[category.name].length > 0 && (
+                      <Select
+                        value={selectedSubCategories[category.name] || null}
+                        onChange={(option) =>
+                          handleSubCategoryChange(category.name, option)
+                        }
+                        options={subCategories[category.name].map(
+                          (subCategory) => ({
+                            value: subCategory,
+                            label: subCategory,
+                          })
+                        )}
+                        className="mt-1 block w-full"
+                        placeholder={`Select Subcategory of ${category.name}`}
+                      />
+                    )}
                 </>
               ) : (
                 <input
                   type="text"
                   name={category.name}
                   value={selectedCategories[category.name]?.value || ""}
-                  onChange={(e) => handleCategoryChange(category.name, { value: e.target.value, label: e.target.value })}
+                  onChange={(e) =>
+                    handleCategoryChange(category.name, {
+                      value: e.target.value,
+                      label: e.target.value,
+                    })
+                  }
                   className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
                   placeholder={`Enter ${category.name}`}
                 />
@@ -428,9 +462,15 @@ console.log(data.images,"--------------------------------");
             </label>
             <Select
               isMulti
-              value={post.features.map(feature => ({ value: feature, label: feature }))}
+              value={post.features.map((feature) => ({
+                value: feature,
+                label: feature,
+              }))}
               onChange={handleFeaturesChange}
-              options={savedFeatures.map(feature => ({ value: feature.name, label: feature.name }))}
+              options={savedFeatures.map((feature) => ({
+                value: feature.name,
+                label: feature.name,
+              }))}
               className="mt-1 block w-full"
               placeholder="Select features"
             />
@@ -454,7 +494,12 @@ console.log(data.images,"--------------------------------");
               type="text"
               name="location"
               value={post.location.addressDetail}
-              onChange={e => setPost({ ...post, location: { ...post.location, addressDetail: e.target.value } })}
+              onChange={(e) =>
+                setPost({
+                  ...post,
+                  location: { ...post.location, addressDetail: e.target.value },
+                })
+              }
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               required
             />
@@ -466,8 +511,16 @@ console.log(data.images,"--------------------------------");
             <input
               type="text"
               name="coordinates"
-              value={post.location.coordinates.join(', ')}
-              onChange={e => setPost({ ...post, location: { ...post.location, coordinates: e.target.value.split(', ') } })}
+              value={post.location.coordinates.join(", ")}
+              onChange={(e) =>
+                setPost({
+                  ...post,
+                  location: {
+                    ...post.location,
+                    coordinates: e.target.value.split(", "),
+                  },
+                })
+              }
               className="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
               required
             />
