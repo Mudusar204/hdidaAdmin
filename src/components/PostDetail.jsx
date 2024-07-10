@@ -2,11 +2,16 @@ import React from "react";
 import Image from "next/image";
 import { Edit, Trash2 } from "lucide-react";
 import ImageSlider from "../components/ImageSlider";
-const PostDetailComponent = ({ post, deletePost }) => {
+const PostDetailComponent = ({ post, deletePost ,updatePost}) => {
   const handleDeleteClick = (event) => {
     event.stopPropagation();
     console.log("Delete icon clicked, propagation stopped");
     deletePost(post._id);
+  };
+  const handleUpdateClick = (event) => {
+    event.stopPropagation();
+    console.log("Delete icon clicked, propagation stopped");
+    updatePost(post._id);
   };
   return (
     <div className="w-[100%]  mb-8 p-4 ">
@@ -18,12 +23,15 @@ const PostDetailComponent = ({ post, deletePost }) => {
           alt={post?.title}
         />
       </div> */}
-      <ImageSlider images={post?.images} height={"70vh"} width={"full"} />
+      <div className="w-[100%] h-[70vh] overflow-hidden"> 
+
+      <ImageSlider images={post?.images} height={"70vh"} width={"100%"} />
+      </div>
       <div className="w-full  flex justify-between items-center gap-10 ">
         <h1 className="text-3xl font-bold my-4">{post.title}</h1>
         <div className="flex  ">
           <Edit
-            onClick={handleDeleteClick}
+            onClick={handleUpdateClick}
             className=" ml-3 cursor-pointer mr-6"
           />
           <Trash2

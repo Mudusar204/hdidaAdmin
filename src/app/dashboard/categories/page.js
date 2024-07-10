@@ -2,38 +2,40 @@
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { Delete, DeleteIcon, Trash2 } from "lucide-react";
 
-const RenderItem = ({ item, onPress, selected }) => {
+const RenderItem = ({ item, onPress, selected, subCategories , handleDeleteCategory}) => {
   return (
     <div
       onClick={() => onPress(item)}
-      className={` h-[150px] w-[150px] border rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 ${
-        selected ? "border-primary" : "border-gray-300"
-      }`}
+      className="border-t-2 border-gray-300  p-2  my-5"
     >
-      <div className="flex justify-center items-center mb-3">
-        {item.name !== "All" ? (
-          <img
-            src={`https://www.hdida.app/cat/${item?.name.split(" ")[0]}.png`}
-            alt={item?.name}
-            className="h-16 w-16"
-          />
-        ) : (
-          <svg
-            width="64"
-            height="64"
-            viewBox="0 0 40 40"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            {/* SVG content */}
-          </svg>
-        )}
-      </div>
+<div className="flex justify-between items-center">
+
       <h3 className="text-lg font-medium text-center mb-1">
         {item?.name || item}
       </h3>
-      <p className="text-sm text-center text-gray-500">{item?.description}</p>
+      <Trash2  onClick={() => handleDeleteCategory(item?._id)} className="cursor-pointer text-red-600" />
+</div>
+      {/* <p className="text-sm text-center text-gray-500">{item?.description}</p> */}
+      {subCategories?.length > 0 && (
+        <ul className="flex flex-wrap justify-start items-center gap-3 text-sm text-center  mt-2">
+          {subCategories.map((subItem, index) => (
+            <div className={` border rounded-lg shadow-md p-2 cursor-pointer transition-transform transform hover:scale-105 ${selected ? "border-primary" : "border-gray-300"
+              }`}>
+              {(item?.name == "Vehicle Type" || item?.name=="Body Style") && (
+                <img 
+                  src={`https://www.hdida.app/cat/${subItem?.name.split(" ")[0]}.png`}
+                  alt={subItem?.name}
+                  className="h-[100px] w-[100px]"
+                />
+
+              )}
+              <li key={index}>{subItem?.name}</li>
+            </div>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
@@ -49,7 +51,7 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
     e.preventDefault();
     onSubmit({
       name: categoryName,
-      values: { name: categoryName, description: categoryValues },
+      values: categoryValues.split(",").map((value) =>({name:value.trim()}) ),
       type: categoryType,
     });
   };
@@ -78,7 +80,6 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
               value={categoryValues}
               onChange={(e) => setCategoryValues(e.target.value)}
               className="mt-1 p-2 w-full border rounded-md"
-              // required
             />
           </div>
           <div className="mb-4">
@@ -114,8 +115,6 @@ const CustomModal = ({ isOpen, onClose, onSubmit }) => {
 
 const CatList = () => {
   const [cats, setCats] = useState([]);
-  const [bodyType, setBodyType] = useState(null);
-  const [selectedVehicleType, setSelectedVehicleType] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
   const getCat = async () => {
@@ -148,15 +147,6 @@ const CatList = () => {
     getCat();
   }, []);
 
-  useEffect(() => {
-    if (cats?.length > 0) {
-      const result = cats.find((x) => x.name === "Vehicle Type");
-      setSelectedVehicleType(result?.values);
-      const bodies = cats.find((x) => x.name === "Body Style");
-      setBodyType(bodies?.values);
-    }
-  }, [cats]);
-
   const handlePress = (item) => {
     // Uncomment and implement navigation logic if needed
     // history.push({
@@ -167,6 +157,8 @@ const CatList = () => {
 
   const handleAddCategory = async (newCategory) => {
     try {
+      toast.dismiss();
+      toast.loading("Adding Category...");
       const token = localStorage.getItem("token");
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/category/create`,
@@ -190,16 +182,58 @@ const CatList = () => {
       console.log("handleAddCategory(): Error:", error);
     }
   };
+  const handleDeleteCategory = async (categoryId) => {
+    try {
+      console.log(categoryId);
+    if( ! window.confirm("Are you sure you want to delete this category?")){
+      return;
+    }
+    
+      toast.dismiss();
+      toast.loading("deleting Category...");
+      const token = localStorage.getItem("token");
+      const response = await axios.delete(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/category/deleteCat`,
+        {
+          headers: {
+            Authorization: token,
+          },
+          data: {
+            id: categoryId,
+          },
+        }
+      );
+      
+
+      if (response.data.status) {
+        toast.success(response.data.message);
+        getCat();
+        // setModalIsOpen(false);
+      } else {
+      toast.dismiss();
+
+        toast.error(response.data.message);
+      }
+    } catch (error) {
+      toast.dismiss();
+
+      toast.error("Failed to delete category");
+      console.log("handleAddCategory(): Error:", error);
+    }
+  };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <h1 className="text-2xl font-bold mb-5 text-center">All categories</h1>
-      <div className="flex justify-start gap-5 items-start flex-wrap">
-        {selectedVehicleType?.map((item, index) => (
-          <RenderItem key={index} item={item} onPress={handlePress} />
-        ))}
-        {bodyType?.map((item, index) => (
-          <RenderItem key={index} item={item} onPress={handlePress} />
+      <div className=" justify-start gap-5 items-start flex-wrap">
+        {cats.map((category, index) => (
+          <RenderItem
+            key={index}
+            item={category}
+            onPress={handlePress}
+            subCategories={category.values}
+            handleDeleteCategory={handleDeleteCategory}
+          />
         ))}
       </div>
       <button

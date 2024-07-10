@@ -88,6 +88,19 @@ const PostDetailScreen = () => {
     }
   };
 
+
+  const updatePost = async (postId) => {
+    try {
+      console.log(postId, "postId");
+
+      router.push(`/dashboard/posts/updatePost?post_id=${postId}`);
+
+      
+    } catch (error) {
+     
+    }
+  };
+
   useEffect(() => {
     getPostDetail();
   }, [postId]);
@@ -95,7 +108,7 @@ const PostDetailScreen = () => {
     <div className="w-full">
       <Suspense>
         {postDetail && (
-          <PostDetailComponent post={postDetail} deletePost={deletePost} />
+          <PostDetailComponent post={postDetail} deletePost={deletePost} updatePost={updatePost}/>
         )}
       </Suspense>
     </div>
